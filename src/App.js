@@ -1,26 +1,41 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
+
+import HomeLayout from './components/Home.js';
+
 
 class App extends Component {
+  constructor(props){
+    super(props);
+    this.state = {
+      className: '',
+      isDraggable: false,
+      isResizable: false,
+      items: 10,
+      cols: 12,
+      rowHeight: 30,
+      onLayoutChange: function () {},
+      animes: [] }
+  }
+
+  getWeekDay(){
+    let d = new Date();
+    return d.toLocaleString('en-us', {weekday: 'long'}).toLowerCase()
+  }
+
+  componentDidMount() {
+    fetch(`https://api.jikan.moe/v3/schedule/${this.getWeekDay()}`)
+    .then(response => response.json())
+    .then(data => {
+      this.setState({
+        items: data[`${this.getWeekDay()}`].length,
+        animes: data[`${this.getWeekDay()}`],
+      })
+    })
+  }
+
   render() {
     return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
-      </div>
+      <HomeLayout {...this.state} />
     );
   }
 }
