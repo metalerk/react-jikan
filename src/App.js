@@ -2,18 +2,15 @@ import React, { Component } from 'react';
 
 import HomeLayout from './components/Home.js';
 
+import { BrowserRouter as Router, Route, Link } from "react-router-dom";
+
+import Detail from './components/Detail.js';
+
 
 class App extends Component {
   constructor(props){
     super(props);
     this.state = {
-      className: '',
-      isDraggable: false,
-      isResizable: false,
-      items: 10,
-      cols: 12,
-      rowHeight: 30,
-      onLayoutChange: function () {},
       animes: [] }
   }
 
@@ -30,12 +27,13 @@ class App extends Component {
         items: data[`${this.getWeekDay()}`].length,
         animes: data[`${this.getWeekDay()}`],
       })
+      this.render()
     })
   }
 
   render() {
     return (
-      <HomeLayout {...this.state} />
+      <HomeLayout animes={this.state.animes} />
     );
   }
 }
